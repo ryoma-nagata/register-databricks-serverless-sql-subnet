@@ -1,0 +1,121 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.14.85.62628",
+      "templateHash": "3890133410020732033"
+    }
+  },
+  "parameters": {
+    "storageAccountName": {
+      "type": "string",
+      "metadata": {
+        "description": "対象のストレージアカウント名を入力"
+      }
+    },
+    "allowSubnetIds": {
+      "type": "array"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "addStorageACLs",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2022-09-01', 'full').location]"
+          },
+          "storageAccountName": {
+            "value": "[parameters('storageAccountName')]"
+          },
+          "sku": {
+            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2022-09-01', 'full').sku.name]"
+          },
+          "kind": {
+            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2022-09-01', 'full').kind]"
+          },
+          "allowSubnetIds": {
+            "value": "[parameters('allowSubnetIds')]"
+          },
+          "networkAcls": {
+            "value": "[reference(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2022-09-01').networkAcls]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.14.85.62628",
+              "templateHash": "15029119343360651354"
+            }
+          },
+          "parameters": {
+            "storageAccountName": {
+              "type": "string"
+            },
+            "location": {
+              "type": "string"
+            },
+            "sku": {
+              "type": "string"
+            },
+            "kind": {
+              "type": "string"
+            },
+            "allowSubnetIds": {
+              "type": "array"
+            },
+            "networkAcls": {
+              "type": "object"
+            }
+          },
+          "variables": {
+            "copy": [
+              {
+                "name": "allowSubnetIdsRules",
+                "count": "[length(parameters('allowSubnetIds'))]",
+                "input": {
+                  "id": "[parameters('allowSubnetIds')[copyIndex('allowSubnetIdsRules')]]",
+                  "action": "Allow"
+                }
+              }
+            ],
+            "verifiedResourceAccessRules": "[if(contains(parameters('networkAcls'), 'resourceAccessRules'), parameters('networkAcls').resourceAccessRules, createArray())]",
+            "allowSubnetIdsRulesUnion": "[union(variables('allowSubnetIdsRules'), parameters('networkAcls').virtualNetworkRules)]"
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Storage/storageAccounts",
+              "apiVersion": "2022-09-01",
+              "name": "[parameters('storageAccountName')]",
+              "location": "[parameters('location')]",
+              "sku": {
+                "name": "[parameters('sku')]"
+              },
+              "kind": "[parameters('kind')]",
+              "properties": {
+                "networkAcls": {
+                  "defaultAction": "[parameters('networkAcls').defaultAction]",
+                  "virtualNetworkRules": "[variables('allowSubnetIdsRulesUnion')]",
+                  "bypass": "[parameters('networkAcls').bypass]",
+                  "ipRules": "[parameters('networkAcls').ipRules]",
+                  "resourceAccessRules": "[variables('verifiedResourceAccessRules')]"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

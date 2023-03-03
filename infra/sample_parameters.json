@@ -1,0 +1,15 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "storageAccountName": {
+      "value": ""
+    },
+    "allowSubnetIds": {
+      "value": [
+        "/subscriptions/8453a5d5-9e9e-40c7-87a4-0ab4cc197f48/resourceGroups/prod-azure-centralus-nephos7-xr/providers/Microsoft.Network/virtualNetworks/kaas-vnet/subnets/worker-subnet",
+        "/subscriptions/8453a5d5-9e9e-40c7-87a4-0ab4cc197f48/resourceGroups/prod-azure-centralus-nephos8-xr/providers/Microsoft.Network/virtualNetworks/kaas-vnet/subnets/worker-subnet"
+      ]
+    }
+  }
+}
