@@ -1,18 +1,11 @@
-# IaCforAzure
+# Databricks Serverless SQL Warehouse のためのサブネット許可設定テンプレート
 
-Azure DevOpsでBicepを開発するためのテンプレートです。
+## 使い方
 
-## クイックスタート
+[サーバレスSQLサブネット](https://learn.microsoft.com/ja-jp/azure/databricks/resources/supported-regions#serverless-sql-subnets)のリストを参考に、パラメータを入力し、deploy Azure ボタンを実行してください。
 
-以下のステップで利用可能です。
+[サンプルパラメータファイル](./infra/sample_parameters.json)
 
-- [DevOps用サービスプリンシパルの作成](docs/create-devops-sp.md)
-- [DevOps環境の構成](docs/create-devops-environment.md)
-- [パイプラインの構成と初回実行](docs/run-pipeline.md)
-- [ブランチの保護](docs/protect-branches.md)
-- [Pull Requestでコードをマージする](docs/try-pull-request.md)
-- [ローカル環境での開発について](docs/local-development.md)
+## Deploy to Azure
 
-## 次のステップ
-
-[DevOps用サービスプリンシパルの作成](docs/create-devops-sp.md)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fryoma-nagata%2Fregister-databricks-serverless-sql-subnet%2Fmain%2Finfra%2Fmain.json)
